@@ -1,0 +1,23 @@
+sylius_plugins_backend_plugin_enable:
+    pattern: /{id}/enable
+    defaults: { _controller: sylius_plugins.controller.backend.plugin:enableAction }
+    
+sylius_plugins_backend_plugin_disable:
+    pattern: /{id}/disable
+    defaults: { _controller: sylius_plugins.controller.backend.plugin:disableAction }
+    
+sylius_plugins_backend_plugin_list:
+    pattern: /list
+    defaults: { _controller: sylius_plugins.controller.backend.plugin:listAction }
+
+sylius_plugins_backend_plugin_uninstall:
+    pattern: /{id}/uninstall
+    defaults: { _controller: sylius_plugins.controller.backend.plugin:uninstallAction }
+
+sylius_plugins_backend_plugin_install:
+    pattern: /{hash}/install
+    defaults: { _controller: sylius_plugins.controller.backend.plugin:installAction }
+
+sylius_plugins_backend_plugin_show:
+    pattern: /{id}
+    defaults: { _controller: sylius_plugins.controller.backend.plugin:showAction }

@@ -1,0 +1,40 @@
+{% extends 'SyliusPluginsBundle::layout.html.twig' %}
+
+{% block content %}
+
+<div class="page-header"> 
+    <h1>Plugin details.</h1> 
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>#id</th>
+            <th>name</th>
+            <th>description</th>
+            <th>version</th>
+            <th>options</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <tr>
+            <td>{{ plugin.id }}</td>
+            <td>{{ plugin.name }}</td>
+            <td>{{ plugin.description }}</td>
+            <td><span class="label notice">{{ plugin.version }}</span></td>
+            <td>
+                <a href="{{ path('sylius_plugins_backend_plugin_activate', {'id': plugin.id}) }}" class="btn primary">activate</a>
+                <a href="{{ path('sylius_plugins_backend_plugin_show', {'id': plugin.id}) }}" class="btn">details</a>              
+                {% if plugin.enabled %}
+                    <a href="{{ path('sylius_plugins_backend_plugin_disable', {'id': plugin.id}) }}" class="btn">disable</a>
+                {% else %}
+                    <a href="{{ path('sylius_plugins_backend_plugin_enable', {'id': plugin.id}) }}" class="btn">enable</a>
+                {% endif %}
+                <a href="{{ path('sylius_plugins_backend_plugin_uninstall', {'id': plugin.id}) }}"class="btn danger">uninstall</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}
