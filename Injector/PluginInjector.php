@@ -27,10 +27,12 @@ class PluginInjector
     
     public function inject(array &$bundles)
     {
-        $plugins = $this->cache->get('sylius_plugins.installed');
-        
-        foreach ($plugins as $plugin) {
-            $bundles[] = $this->factory->create($plugin);
+        if ($this->cache->has('sylius_plugins.installed')) {
+            $plugins = $this->cache->get('sylius_plugins.installed');
+            
+            foreach ($plugins as $plugin) {
+                $bundles[] = $this->factory->create($plugin);
+            }
         }
     }
 }
