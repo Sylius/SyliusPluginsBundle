@@ -17,7 +17,7 @@ class PluginFactory implements PluginFactoryInterface
 {
     public function create(PluginInterface $plugin)
     {
-        if (file_exists($autoloader = __DIR__ . '/../../../../../../sylius-sandbox/Resources/plugins/' . $plugin->getLogicalName() . '/autoload.php')) {
+        if (file_exists($autoloader = $plugin->getPath() . '/autoload.php')) {
             require_once $autoloader;
         }
         
