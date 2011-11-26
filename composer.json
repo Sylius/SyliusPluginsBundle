@@ -1,0 +1,29 @@
+{
+    "name": "sylius/plugins-bundle",
+    "type": "symfony-bundle",
+    "description": "Plugins for Symfony2 applications installable via web GUI.",
+    "keywords": ["plugins", "plugin"],
+    "homepage": "http://sylius.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paweł Jędrzejewski",
+            "email": "pjedrzejewski@diweb.pl"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/Sylius/SyliusPluginsBundle/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": "2.*"
+    },
+    "suggest": {
+        "symfony/doctrine-bundle": "*"
+    },
+    "autoload": {
+        "psr-0": { "Sylius\\Bundle\\PluginsBundle": "" }
+    },
+    "target-dir": "Sylius/Bundle/PluginsBundle"
+}
