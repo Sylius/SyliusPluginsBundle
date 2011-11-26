@@ -17,6 +17,9 @@
     
     <services>
     	<service id="sylius_plugins.manipulator.plugin" class="%sylius_plugins.manipulator.plugin.class%">
+    		<argument>%sylius_plugins.directory%</argument>
+    		<argument>%kernel.cache_dir%</argument>
+    		<argument type="service" id="filesystem" />
     		<argument type="service" id="sylius_plugins.manager.plugin" />
     		<argument type="service" id="sylius_plugins.cache" />
     	</service>

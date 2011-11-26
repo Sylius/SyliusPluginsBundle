@@ -11,6 +11,7 @@
 
 namespace Sylius\Bundle\PluginsBundle\Manipulator;
 
+use Symfony\Component\HttpKernel\Util\Filesystem;
 use Sylius\Bundle\PluginsBundle\Cache\CacheInterface;
 use Sylius\Bundle\PluginsBundle\Model\PluginManagerInterface;
 use Sylius\Bundle\PluginsBundle\Model\PluginInterface;
@@ -22,6 +23,10 @@ use Sylius\Bundle\PluginsBundle\Model\PluginInterface;
  */
 class PluginManipulator implements PluginManipulatorInterface
 {
+    protected $pluginsDir;
+    protected $cacheDir;
+    protected $filesystem;
+    
     /**
      * Plugin manager.
      * 
@@ -42,8 +47,11 @@ class PluginManipulator implements PluginManipulatorInterface
      * @param PluginManagerInterface 	$pluginManager
      * @param SlugizerInterface 		$slugizer
      */
-    public function __construct(PluginManagerInterface $pluginManager, CacheInterface $cache)
+    public function __construct($pluginsDir, $cacheDir, Filesystem $filesystem, PluginManagerInterface $pluginManager, CacheInterface $cache)
     {
+        $this->pluginsDir = $pluginsDir;
+        $this->cacheDir = $cacheDir;
+        $this->filesystem = $filesystem;
         $this->pluginManager = $pluginManager;
         $this->cache = $cache;
     }
@@ -54,9 +62,9 @@ class PluginManipulator implements PluginManipulatorInterface
     public function install(PluginInterface $plugin)
     {
         $plugin->incrementInstalledAt();
-        $this->pluginManager->persistPlugin($plugin);
+        $plugin->setPath($this->pluginsDir . '/' . $plugin->getLogicalName());
         
-        $this->cache->remove('sylius_plugins.plugins');
+        $this->pluginManager->persistPlugin($plugin);
     }
     
 	/**
@@ -65,8 +73,6 @@ class PluginManipulator implements PluginManipulatorInterface
     public function uninstall(PluginInterface $plugin)
     {     
         $this->pluginManager->removePlugin($plugin);
-        
-        $this->cache->remove('sylius_plugins.plugins');
     }
     
     /**
@@ -76,8 +82,6 @@ class PluginManipulator implements PluginManipulatorInterface
     {
         $plugin->setEnabled(true);
         $this->pluginManager->persistPlugin($plugin);
-        
-        $this->cache->remove('sylius_plugins.plugins');
     }
     
    	/**
@@ -87,14 +91,19 @@ class PluginManipulator implements PluginManipulatorInterface
     {
         $plugin->setEnabled(false);
         $this->pluginManager->persistPlugin($plugin);
-        
-        $this->cache->remove('sylius_plugins.plugins');
     }
     
-    public function activate(PluginInterface $plugin)
+    public function refresh()
     {
-        $this->cache->set('sylius_plugins.active_plugin', $plugin->getLogicalName());
+        $cacheDir = $this->cacheDir;
         
-        $this->enable($plugin);
+        if (!is_writable($cacheDir)) {
+            throw new \RuntimeException(sprintf('Unable to write in the "%s" directory.', $cacheDir));
+        }
+        
+        $this->filesystem->remove($cacheDir);
+        
+        $plugins = $this->pluginManager->findPluginsBy(array('enabled' => true));
+        $this->cache->set('sylius_plugins.installed', $plugins);
     }
 }

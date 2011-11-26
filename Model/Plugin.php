@@ -20,6 +20,8 @@ abstract class Plugin implements PluginInterface
 {
     protected $id;
     protected $name;
+    protected $class;
+    protected $path;
     protected $logicalName;
     protected $version;
     protected $description;
@@ -44,6 +46,26 @@ abstract class Plugin implements PluginInterface
     public function setName($name)
     {
         $this->name = $name;
+    }
+    
+    public function getClass()
+    {
+        return $this->class;
+    }
+    
+    public function setClass($class)
+    {
+        $this->class = $class;
+    }
+    
+    public function getPath()
+    {
+        return $this->path;
+    }
+    
+    public function setPath($path)
+    {
+        $this->path = $path;
     }
     
     public function getLogicalName()
@@ -101,6 +123,7 @@ abstract class Plugin implements PluginInterface
     public function loadConfiguration($configuration)
     {
         $this->setName($configuration['name']);
+        $this->setClass($configuration['class']);
         $this->setVersion($configuration['version']);
         $this->setDescription($configuration['description']);
     }

@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Sylius\Bundle\PluginsBundle\HttpKernel\Factory;
+namespace Sylius\Bundle\PluginsBundle\Factory;
 
 use Sylius\Bundle\PluginsBundle\Model\PluginInterface;
 
 interface PluginFactoryInterface
 {
     function create(PluginInterface $plugin);
-    function dump(PluginInterface $plugin);
 }

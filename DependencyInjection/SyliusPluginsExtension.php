@@ -18,7 +18,7 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 
 /**
- * Authentification extension.
+ * Plugins extension.
  * 
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
@@ -54,7 +54,6 @@ class SyliusPluginsExtension extends Extension
         $configurations = array(
             'controllers',
             'manipulators',
-            'listeners',
             'plugins'
         );
         

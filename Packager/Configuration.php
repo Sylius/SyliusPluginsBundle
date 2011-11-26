@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('name')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('version')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('description')->defaultValue('...')->end()
             ->end();

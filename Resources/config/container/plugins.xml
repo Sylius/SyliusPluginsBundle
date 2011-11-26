@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+
+ This file is part of the Sylius package.
+
+ (c) Paweł Jędrzejewski
+ 
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<parameters>
+		<parameter key="sylius_plugins.cache.class">Sylius\Bundle\PluginsBundle\Cache\FilesystemCache</parameter>
+		<parameter key="sylius_plugins.packager.class">Sylius\Bundle\PluginsBundle\Packager\PluginPackager</parameter>
+	</parameters>
+
+    <services>
+        <service id="sylius_plugins.cache" class="%sylius_plugins.cache.class%">
+        	<argument>%kernel.cache_dir%</argument>
+        </service>
+        <service id="sylius_plugins.packager" class="%sylius_plugins.packager.class%">
+        	<argument>%sylius_plugins.directory%</argument>
+        </service>
+    </services>
+    
+</container>

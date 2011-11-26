@@ -51,7 +51,7 @@ class PluginPackager
         
         foreach ($plugins as $plugin) {
             if (!$plugin instanceof PluginInterface) {
-                throw new InvalidArgumentException('Plugins supplied to packages must implement Sylius\Bundle\PluginsBundle\Model\PluginInterface');
+                throw new InvalidArgumentException('Plugins supplied to packager must implement Sylius\Bundle\PluginsBundle\Model\PluginInterface');
             }
             
             $installedPluginsPaths[] = $this->packsDir . '/' . $plugin->getLogicalName();

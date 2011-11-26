@@ -49,9 +49,7 @@ interface PluginManipulatorInterface
     function disable(PluginInterface $plugin);
     
     /**
-     * Activates plugin.
-     * 
-     * @param PluginInterface $plugin
+     * Refreshes installed plugins cache.
      */
-    function activate(PluginInterface $plugin);
+    function refresh();
 }

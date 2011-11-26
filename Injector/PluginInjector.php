@@ -11,7 +11,8 @@
 
 namespace Sylius\Bundle\PluginsBundle\Injector;
 
-use Sylius\Bundle\PluginsBundle\HttpKernel\Factory\PluginFactoryInterface;
+use Sylius\Bundle\PluginsBundle\Cache\CacheInterface;
+use Sylius\Bundle\PluginsBundle\Factory\PluginFactoryInterface;
 
 class PluginInjector
 {
@@ -24,9 +25,9 @@ class PluginInjector
         $this->cache = $cache;
     }
     
-    public function inject(array $bundles)
+    public function inject(array &$bundles)
     {
-        $plugins = $this->cache->get('sylius_plugins');
+        $plugins = $this->cache->get('sylius_plugins.installed');
         
         foreach ($plugins as $plugin) {
             $bundles[] = $this->factory->create($plugin);

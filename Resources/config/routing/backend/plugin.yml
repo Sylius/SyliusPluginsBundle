@@ -15,7 +15,7 @@ sylius_plugins_backend_plugin_uninstall:
     defaults: { _controller: sylius_plugins.controller.backend.plugin:uninstallAction }
 
 sylius_plugins_backend_plugin_install:
-    pattern: /{hash}/install
+    pattern: /{path}/install
     defaults: { _controller: sylius_plugins.controller.backend.plugin:installAction }
 
 sylius_plugins_backend_plugin_show:

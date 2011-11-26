@@ -66,8 +66,9 @@ class PluginController extends ContainerAware
         $plugin = $pack->buildPlugin($this->container->get('sylius_plugins.manager.plugin')->createPlugin());
         
         if (0 === count($this->container->get('validator')->validate($plugin))) {
-            $this->container->get('event_dispatcher')->dispatch(SyliusPluginsEvents::THEME_INSTALL, new FilterPluginEvent($plugin));
+            $this->container->get('event_dispatcher')->dispatch(SyliusPluginsEvents::PLUGIN_INSTALL, new FilterPluginEvent($plugin));
             $this->container->get('sylius_plugins.manipulator.plugin')->install($plugin);
+            $this->container->get('sylius_plugins.manipulator.plugin')->refresh();
             
             return new RedirectResponse($this->container->get('router')->generate('sylius_plugins_backend_plugin_list'));
         }
@@ -86,31 +87,11 @@ class PluginController extends ContainerAware
             throw new NotFoundHttpException('Requested plugin does not exist.');
         }
         
-        if ($plugin->getLogicalName() === $this->container->get('liip_plugin.active_plugin')->getName()) {
-            $this->container->get('sylius_plugins.cache')->remove('sylius_plugins.active_plugin');
-        }
-        
-        $this->container->get('event_dispatcher')->dispatch(SyliusPluginsEvents::THEME_UNINSTALL, new FilterPluginEvent($plugin));
+        $this->container->get('event_dispatcher')->dispatch(SyliusPluginsEvents::PLUGIN_UNINSTALL, new FilterPluginEvent($plugin));
         $this->container->get('sylius_plugins.manipulator.plugin')->uninstall($plugin);
+        $this->container->get('sylius_plugins.manipulator.plugin')->refresh();
         
         return new RedirectResponse($this->container->get('router')->generate('sylius_plugins_backend_plugin_list'));
-    }
-    
-	/**
-     * Activates plugin.
-     */
-    public function activateAction($id)
-    {
-        $plugin = $this->container->get('sylius_plugins.manager.plugin')->findPlugin($id);
-        
-        if (!$plugin) {
-            throw new NotFoundHttpException('Requested plugin does not exist.');
-        }
-        
-        $this->container->get('event_dispatcher')->dispatch(SyliusPluginsEvents::THEME_ACTIVATE, new FilterPluginEvent($plugin));
-        $this->container->get('sylius_plugins.manipulator.plugin')->activate($plugin);
-        
-        return new RedirectResponse($this->container->get('request')->headers->get('referer'));
     }
     
 	/**
@@ -124,8 +105,9 @@ class PluginController extends ContainerAware
             throw new NotFoundHttpException('Requested plugin does not exist.');
         }
         
-        $this->container->get('event_dispatcher')->dispatch(SyliusPluginsEvents::THEME_ENABLE, new FilterPluginEvent($plugin));
+        $this->container->get('event_dispatcher')->dispatch(SyliusPluginsEvents::PLUGIN_ENABLE, new FilterPluginEvent($plugin));
         $this->container->get('sylius_plugins.manipulator.plugin')->enable($plugin);
+        $this->container->get('sylius_plugins.manipulator.plugin')->refresh();
         
         return new RedirectResponse($this->container->get('request')->headers->get('referer'));
     }
@@ -141,12 +123,9 @@ class PluginController extends ContainerAware
             throw new NotFoundHttpException('Requested plugin does not exist.');
         }
         
-        if ($plugin->getLogicalName() === $this->container->get('liip_plugin.active_plugin')->getName()) {
-            $this->container->get('sylius_plugins.cache')->remove('sylius_plugins.active_plugin');
-        }
-        
-        $this->container->get('event_dispatcher')->dispatch(SyliusPluginsEvents::THEME_DISABLE, new FilterPluginEvent($plugin));
+        $this->container->get('event_dispatcher')->dispatch(SyliusPluginsEvents::PLUGIN_DISABLE, new FilterPluginEvent($plugin));
         $this->container->get('sylius_plugins.manipulator.plugin')->disable($plugin);
+        $this->container->get('sylius_plugins.manipulator.plugin')->refresh();
         
         return new RedirectResponse($this->container->get('request')->headers->get('referer'));
     }

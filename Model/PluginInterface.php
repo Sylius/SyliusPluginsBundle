@@ -16,6 +16,10 @@ interface PluginInterface
     function getId();
     function getName();
     function setName($name);
+    function getClass();
+    function setClass($class);
+    function getPath();
+    function setPath($path);
     function getLogicalName();
     function setLogicalName($logicalName);
     function getVersion();
